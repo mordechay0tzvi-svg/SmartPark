@@ -1,4 +1,5 @@
-namespace SmartPark
+using SmartPark.Parkings;
+namespace SmartPark.interfaces
 {
     interface IOrderable
     {
