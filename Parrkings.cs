@@ -1,6 +1,6 @@
 namespace SmartPark
 {
-    abstract class GeneralPark : IRecordable
+    abstract class GeneralPark 
     {
         DateTime entry;
         DateTime exit;
@@ -19,10 +19,6 @@ namespace SmartPark
         IPayment Pay(GeneralPark park)
         {
             
-        }
-        string Record()
-        {
-            return $"{entry} | {exit} | {Calculate()}";
         }
     }
  

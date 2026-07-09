@@ -59,6 +59,8 @@ interface IPayment
 interface IRecordable
         - void RecordLine(){}
         לדרוש תיעוד מחניה
+        ולתיעוד אי-סינכרון של הזמנים
+        
 
 class InvalidTime : Exception - לתפיסת בעיות בזמני החניה 
 
