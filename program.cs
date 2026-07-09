@@ -1,5 +1,3 @@
-using System.Dynamic;
-
 namespace SmartPark
 {
     class Park
@@ -32,21 +30,21 @@ namespace SmartPark
         }
     }
     class EmptyParking : Exception{}
-    class program
+    class Program
     {
         Park parking = new Park();
-        static GeneralPark? NewParking(string choice)
+        static GeneralPark NewParking(string choice)
         {
             switch (choice)
             {
                 case "1":
-                return new RegularCarPark();
+                    return new RegularCarPark();
                 case "2":
-                return new HandicapPark();
+                    return new HandicapPark();
                 case "3":
-                return new BikePark();
+                    return new BikePark();
                 default:
-                return null;
+                    return new RegularCarPark();
             }
         }
         static void PrintMenu()
@@ -55,27 +53,21 @@ namespace SmartPark
             Console.WriteLine("1. Start parking");
             Console.WriteLine("2. Finish parking:");
         }
-        static void Start()
+        static void StartParking()
         {
-            while (true)
-            {
-                Console.WriteLine("Choose type to park:");
-                Console.WriteLine("1. Regular for 15 an hour");
-                Console.WriteLine("2. Handicap for 5 an hour");
-                Console.WriteLine("3. Motorcycle for 8 an hour");
-                string choice = Console.ReadLine();
-                GeneralPark? newPark = NewParking(choice);
-                if (newPark == null)
-                {
-                    Console.WriteLine("Not a choice");
-                    continue;
-                } 
-                Parking.AddPark(newPark);
-                Console.WriteLine($"Parked succesfully. your parking number is {parking.Count}");
+            Console.WriteLine("Choose type to park (regular is default):");
+            Console.WriteLine("1. Regular for 15 an hour");
+            Console.WriteLine("2. Handicap for 5 an hour");
+            Console.WriteLine("3. Motorcycle for 8 an hour");
+            string choice = Console.ReadLine();
+            GeneralPark newPark = NewParking(choice);
+            Parking.AddPark(newPark);
+            Console.WriteLine($"Parked succesfully. your parking number is {parking.Count}");
         }
-        static void End()
+        static void EndParking()
         {
-            while (true)
+            bool exiting = false;
+            while (!exiting)
             {
                 Console.WriteLine("Enter parking number:");
                 int choice = Console.ReadLine();
@@ -85,14 +77,18 @@ namespace SmartPark
                     try
                     {
                         toExit.Exit();
+                        PayForParking();
+                        exiting = true; 
                     }
                     catch (InvalidExitTime)
                     {
                         Console.WriteLine("Error with time");
+                        exiting = true; 
                     }
                     catch (InvalidExiting)
                     {
                         Console.WriteLine("Car already out");
+                        exiting = true; 
                     }
                 }
                 catch (EmptyParking)
@@ -102,10 +98,45 @@ namespace SmartPark
                 }
             }
         }
+        static void PayForParking(GeneralPark toPay)
+        {
+            IPayment payMethod; 
+            Console.WriteLine("Choose payment method (cash is default):");
+            Console.WriteLine("1. Cash");
+            Console.WriteLine("2. Credit card");
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    payMethod = new CashPayment();
+                    break;
+                case "2":
+                    payMethod = new CreditCardPayment();
+                    break;
+                default:
+                    payMethod = new CashPayment();
+                    break;
+            }
+            Console.WriteLine(payMethod.Pay());
+        }
         static void Main()
         {
-            
-
+            bool working = true;
+            while (working)
+            {
+                Console.WriteLine("Welcome to ou parking garage.");
+                PrintMenu();
+                string action = Console.ReadLine();
+                switch (action)
+                {
+                    case "1":
+                        StartParking();
+                    case "2":
+                        EndParking();
+                    default:
+                        working = false;
+                }
+            }
         }
     }
 }
