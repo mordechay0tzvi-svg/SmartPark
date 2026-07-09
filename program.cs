@@ -61,8 +61,13 @@ namespace SmartPark
             Console.WriteLine("3. Motorcycle for 8 an hour");
             string choice = Console.ReadLine();
             GeneralPark newPark = NewParking(choice);
-            Parking.AddPark(newPark);
-            Console.WriteLine($"Parked succesfully. your parking number is {parking.Count}");
+            parking.AddPark(newPark);
+            Console.WriteLine($"Parked succesfully. your parking number is {parking.GetParkNumber()}");
+        }
+        static void OrderSpot(GeneralPark toSave)
+        {
+            toSave.OrderSpot();
+            Console.WriteLine("Parking spot orderd");
         }
         static void EndParking()
         {
@@ -77,17 +82,20 @@ namespace SmartPark
                     try
                     {
                         toExit.Exit();
-                        PayForParking();
+                        PayForParking(toExit);
+                        RecordPark.Record(toExit);
                         exiting = true; 
                     }
                     catch (InvalidExitTime)
                     {
                         Console.WriteLine("Error with time");
+                        RecordExitError.Record(toExit);
                         exiting = true; 
                     }
                     catch (InvalidExiting)
                     {
                         Console.WriteLine("Car already out");
+                        RecordCarExitingAttept(toExit);
                         exiting = true; 
                     }
                 }
@@ -122,9 +130,9 @@ namespace SmartPark
         static void Main()
         {
             bool working = true;
-            while (working)
+            while(working)
             {
-                Console.WriteLine("Welcome to ou parking garage.");
+                Console.WriteLine("Welcome to our parking garage.");
                 PrintMenu();
                 string action = Console.ReadLine();
                 switch (action)

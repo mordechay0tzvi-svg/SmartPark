@@ -27,20 +27,28 @@ namespace SmartPark
 
     interface IRecordable
     {
-        string Record(GeneralPark parking);
+        void Record(GeneralPark parking);
     }
     class RecordPark : IRecordable
     {
-        string Record(GeneralPark parking)
+        void Record(GeneralPark parking)
         {
-            return $"{parking.entry} | {parking.exit} | {parking.Calculate()}";
+             File.WriteAllText("records.txt" ,$"{parking.entry} | {parking.exit} | {parking.Calculate()}");
         }
     }
-    class RecordError : IRecordable
+    class RecordExitError : IRecordable
     {
-        string Record(GeneralPark parking)
+        void Record(GeneralPark parking)
         {
-            return $"Error with exit time with parking enterd at: {parking.entry}";
+             File.WriteAllText("records.txt" ,$"Error with exit time with parking enterd at: {parking.entry}");
+        }
+    }
+
+    class RecordCarExitingAttept : IRecordable
+    {
+        void Record(GeneralPark parking)
+        {
+             File.WriteAllText("records.txt" ,$"attempt to exit car that already exited at: {parking.exit}");
         }
     }
 }
