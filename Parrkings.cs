@@ -4,19 +4,21 @@ namespace SmartPark
     {
         DateTime entry;
         DateTime exit;
+        bool spotSaved = false;
         
-        void Enter ()
+        public void Enter ()
         {
             entry = DateTime.Now;
         }
 
-        void Exit ()
+        public void Exit ()
         {
             exit = DateTime.Now;
             if (exit < entry)
             {
                 throw new InvalidExitTime();
             }
+            spotSaved = false;    
         }
         
         abstract int Calculate();
@@ -24,27 +26,38 @@ namespace SmartPark
  
     class RegularCarPark : GeneralPark, IOrderable
     {
-        RegularCarPark():base(entry, exit){}
-        override int Calculate()
+        RegularCarPark():base(entry, exit, spotSaved){}
+        public override int Calculate()
         {
             return  (exit.Hour - entry.Hour) * 15;   
         }
+        public void OrderSpot()
+        {
+            spotSaved = true;
+        }
     }
+
     class HandicapPark : GeneralPark, IOrderable
     {
-        HandicapPark():base(entry, exit){}
-        override int Calculate()
+        HandicapPark():base(entry, exit,spotSaved){}
+        public override int Calculate()
         {
             return  (exit.Hour - entry.Hour) * 5;
         }
+        public void OrderSpot()
+        {
+            spotSaved = true;
+        }
     }
+
     class BikePark : GeneralPark
     {
         BikePark():base(entry, exit){}
-        override int Calculate()
+        public override int Calculate()
         {
             return  (exit.Hour - entry.Hour) * 8;
         }
     }
-    class InvalidExitTime : Exception(){}
+
+    class InvalidExitTime : Exception() {}
 }
