@@ -63,6 +63,8 @@ interface IRecordable
 
 
 class InvalidExitTime : Exception - לתפיסת בעיות בזמני החניה 
+class InvalidExiting : Exception - אם מוציא רכב שכבר בחוץ  
+
 
 class RecordPark : IRecordable - לתיעוד החניות
 class RecordError : IRecordable - לתעד שגיאה של זמן

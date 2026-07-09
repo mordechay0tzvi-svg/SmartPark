@@ -21,6 +21,10 @@ namespace SmartPark.Parkings
             {
                 throw new InvalidExitTime();
             }
+            if (!inside)
+            {
+                throw new InvalidExiting();
+            }
             spotSaved = false; 
             inside = false;
         }
@@ -29,7 +33,7 @@ namespace SmartPark.Parkings
  
     class RegularCarPark : GeneralPark, IOrderable
     {
-        RegularCarPark():base(entry, exit, spotSaved){}
+        RegularCarPark():base(entry, exit, spotSaved, inside){}
         public override int Calculate()
         {
             return 15 * (exit.Hour - entry.Hour);   
@@ -42,7 +46,7 @@ namespace SmartPark.Parkings
 
     class HandicapPark : GeneralPark, IOrderable
     {
-        HandicapPark():base(entry, exit,spotSaved){}
+        HandicapPark():base(entry, exit, spotSaved, inside){}
         public override int Calculate()
         {
             return 5 * (exit.Hour - entry.Hour);
@@ -55,12 +59,12 @@ namespace SmartPark.Parkings
 
     class BikePark : GeneralPark
     {
-        BikePark():base(entry, exit){}
+        BikePark():base(entry, exit, spotSaved, inside){}
         public override int Calculate()
         {
             return 8 * (exit.Hour - entry.Hour);
         }
     }
-
     class InvalidExitTime : Exception() {}    
+    class InvalidExiting : Exception() {}    
 }
