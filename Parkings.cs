@@ -1,5 +1,4 @@
-using SmartPark.interfaces;
-namespace SmartPark.Parkings
+namespace SmartPark
 {
     abstract class GeneralPark 
     {
@@ -7,14 +6,13 @@ namespace SmartPark.Parkings
         DateTime exit;
         public bool spotSaved = false;
         public bool inside = false;
-        
-        public void Enter ()
+        public void Enter()
         {
             entry = DateTime.Now;
             inside = true;
         }
 
-        public void Exit ()
+        public void Exit()
         {
             exit = DateTime.Now;
             if (exit < entry)
