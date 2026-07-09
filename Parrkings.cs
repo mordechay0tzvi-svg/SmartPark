@@ -13,13 +13,13 @@ namespace SmartPark
         void Exit ()
         {
             exit = DateTime.Now;
+            if (exit < entry)
+            {
+                throw new InvalidExitTime();
+            }
         }
         
-        override int Calculate();
-        IPayment Pay(GeneralPark park)
-        {
-            
-        }
+        abstract int Calculate();
     }
  
     class RegularCarPark : GeneralPark, IOrderable
@@ -27,7 +27,7 @@ namespace SmartPark
         RegularCarPark():base(entry, exit){}
         override int Calculate()
         {
-            
+            return  (exit.Hour - entry.Hour) * 15;   
         }
     }
     class HandicapPark : GeneralPark, IOrderable
@@ -35,7 +35,7 @@ namespace SmartPark
         HandicapPark():base(entry, exit){}
         override int Calculate()
         {
-            
+            return  (exit.Hour - entry.Hour) * 5;
         }
     }
     class BikePark : GeneralPark
@@ -43,9 +43,8 @@ namespace SmartPark
         BikePark():base(entry, exit){}
         override int Calculate()
         {
-            
+            return  (exit.Hour - entry.Hour) * 8;
         }
     }
-    class InvalidTime : Exception();
-
+    class InvalidExitTime : Exception(){}
 }

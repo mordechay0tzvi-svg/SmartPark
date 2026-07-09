@@ -57,12 +57,12 @@ interface IPayment
         לשני סוגי התשלום 
 
 interface IRecordable
-        - void RecordLine(){}
+        - void Record(){}
         לדרוש תיעוד מחניה
-        ולתיעוד אי-סינכרון של הזמנים
-        
+        ולתיעוד שגיאה של הזמנים
 
-class InvalidTime : Exception - לתפיסת בעיות בזמני החניה 
 
-class RecordPark - לתיעוד החניות
+class InvalidExitTime : Exception - לתפיסת בעיות בזמני החניה 
 
+class RecordPark : IRecordable - לתיעוד החניות
+class RecordError : IRecordable - לתעד שגיאה של זמן

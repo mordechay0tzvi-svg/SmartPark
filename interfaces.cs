@@ -7,21 +7,21 @@ namespace SmartPark
 
     interface IPayment
     {
-        void Pay();
+        void Pay(GeneralPark park);
     }
 
     class CreditCardPayment : IPayment
     {
-        void Pay()
+        string Pay(GeneralPark parking)
         {
-            
+            return $"{parking.Calculate}; paid by credit card";
         }
     }
     class CashPayment : IPayment
     {
-        void Pay()
+        void Pay(GeneralPark parking)
         {
-            
+            return $"{parking.Calculate}; paid in cash";
         }
     }
 
